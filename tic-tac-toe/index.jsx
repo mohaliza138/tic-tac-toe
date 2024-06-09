@@ -14,6 +14,18 @@ export default function TicTacToe() {
   const [isXTurn, setIsXTurn] = useState(true);
   const [status, setStatus] = useState("");
 
+  function handleClick(getCurrentBox) {
+    let cpyBoxes = [...boxes];
+    if (cpyBoxes[getCurrentBox]) return;
+    cpyBoxes[getCurrentBox] = isXTurn ? "X" : "O";
+    setIsXTurn(!isXTurn);
+    setBoxes(cpyBoxes);
+  }
+
+  function handleRestart() {
+    setIsXTurn(true);
+    setBoxes(Array(9).fill(""));
+  }
 
   console.log(boxes);
 

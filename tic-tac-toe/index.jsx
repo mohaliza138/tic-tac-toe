@@ -14,9 +14,36 @@ export default function TicTacToe() {
   const [isXTurn, setIsXTurn] = useState(true);
   const [status, setStatus] = useState("");
 
+  function getWinner(boxes) {
+    const winPatterns = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let i = 0; i < winPatterns.length; i++) {
+      const [x, y, z] = winPatterns[i];
+
+      if (
+        boxes[x] &&
+        boxes[x] === boxes[y] &&
+        boxes[x] === boxes[z]
+      ) {
+        return boxes[x];
+      }
+    }
+
+    return null;
+  }
+
   function handleClick(getCurrentBox) {
     let cpyBoxes = [...boxes];
-    if (cpyBoxes[getCurrentBox]) return;
+    if (getWinner(cpyBoxes) || cpyBoxes[getCurrentBox]) return;
     cpyBoxes[getCurrentBox] = isXTurn ? "X" : "O";
     setIsXTurn(!isXTurn);
     setBoxes(cpyBoxes);
@@ -26,6 +53,16 @@ export default function TicTacToe() {
     setIsXTurn(true);
     setBoxes(Array(9).fill(""));
   }
+
+  useEffect(() => {
+    if (!getWinner(boxes) && boxes.every((item) => item !== "")) {
+      setStatus(`This is a draw ! Please restart the game`);
+    } else if (getWinner(boxes)) {
+      setStatus(`Winner is ${getWinner(boxes)}. Please restart the game`);
+    } else {
+      setStatus(`Next player is ${isXTurn ? "X" : "O"}`);
+    }
+  }, [boxes, isXTurn]);
 
   console.log(boxes);
 

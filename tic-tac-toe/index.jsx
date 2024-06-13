@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./styles.css";
+import "../styles.css";
 
 function Box({ value, onClick }) {
   return (
